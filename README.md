@@ -24,7 +24,7 @@ fun state(): Observable<State> {
   return Observable.just(
     State(),
     State(bar = "initialized"),
-    State(foo = "changed")
+    State(foo = "changed", bar = "initialized")
   )
 }
 
@@ -36,15 +36,69 @@ state().subscribe { println(it) }
 ```
 
 ### Observable.mapDistinct
-Map the stream to the value returned from `mapper` and ensure
-that subsequently emitted values are distinct:
+Map to one property of the state and ensure
+that subsequently emitted values are distinct.
+
+The passed lambda acts as an extension function with
+the Observable's type as it's receiver and thus allows
+to access properties without having to refer to the lambda parameter.
 
 ```kotlin
 state().mapDistinct { foo }
   .subscribe { println(it) }
 
-// --> State(foo=foo, bar=null)
-// --> State(foo=changed, bar=null) // skipped middle value with identical `foo`
+// --> foo
+// --> changed // skips middle value with identical `foo`
+```
+
+
+### Observable.mapOptional
+Map to one nullable property of the state and wrap in `Optional`
+
+```kotlin
+state().mapOptional { bar }
+  .subscribe { println(it) }
+
+// --> None
+// --> Some(initialized)
+// --> None
+```
+
+
+### Observable.mapSome
+Map to one nullable property of the state and wrap in `Optional`,
+then filter for `Some`
+
+```kotlin
+state().mapSome { bar }
+  .subscribe { println(it) }
+
+// --> initialized // skips `None`
+// --> initialized // `foo` changed, causing another emission
+```
+
+
+### Observable.mapSomeDistinct
+Map to one nullable property of the state and wrap in `Optional`,
+then filter for `Some` and ensure that subsequently emitted values are distinct
+
+```kotlin
+state().mapSomeDistinct { bar }
+  .subscribe { println(it) }
+
+// --> initialized // skips `None` and unrelated change of `foo`
+```
+
+
+### Observable.mapSomeOnce
+Map to one nullable property of the state and wrap in `Optional`,
+then filter for `Some` and ensure that only the first value is observed
+
+```kotlin
+state().mapSomeOnce { bar }
+  .subscribe { println(it) }
+
+// --> initialized // skips `None` and unsubscribes after one emission
 ```
 
 
