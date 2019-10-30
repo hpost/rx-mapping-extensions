@@ -1,6 +1,7 @@
 # rx-mapping-extensions
 
 [![](https://jitpack.io/v/cc.femto/rx-mapping-extensions.svg)](https://jitpack.io/#cc.femto/rx-mapping-extensions)
+[![](https://jitci.com/gh/hpost/rx-mapping-extensions/svg)](https://jitci.com/gh/hpost/rx-mapping-extensions)
 
 Extension functions that simplify common mapping operations
 in [RxJava](https://github.com/ReactiveX/RxJava) streams, especially
