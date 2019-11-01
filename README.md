@@ -53,6 +53,18 @@ state().mapDistinct { foo }
 ```
 
 
+### Observable.mapOnce
+Map to one property of the state and ensure
+that only the first value is observed
+
+```kotlin
+state().mapOnce { foo }
+  .subscribe { println(it) }
+
+// --> foo // completes after one value
+```
+
+
 ### Observable.mapOptional
 Map to one nullable property of the state and wrap in `Optional`
 
@@ -99,7 +111,7 @@ then filter for `Some` and ensure that only the first value is observed
 state().mapSomeOnce { bar }
   .subscribe { println(it) }
 
-// --> initialized // skips `None` and unsubscribes after one emission
+// --> initialized // skips `None` and completes after one emission
 ```
 
 
