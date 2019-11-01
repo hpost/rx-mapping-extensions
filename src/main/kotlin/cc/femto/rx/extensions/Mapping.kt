@@ -19,6 +19,20 @@ inline fun <T, R : Any> Observable<T>.mapDistinct(crossinline mapper: T.() -> R)
     this.map { mapper(it) }.distinctUntilChanged()
 
 /**
+ * Map the stream to the value returned from [mapper] and then
+ * apply [Observable.take] with value `1` to ensure the stream will
+ * complete after emitting one value
+ *
+ * Usage:
+ * <code>
+ *   stream.mapOnce { foo }
+ *     .subscribe { /* access at most one value */ }
+ * </code>
+ */
+inline fun <T, R : Any> Observable<T>.mapOnce(crossinline mapper: T.() -> R): Observable<R> =
+    this.map { mapper(it) }.take(1)
+
+/**
  * Map the stream to the value returned from [mapper], which is wrapped in an [Optional]
  *
  * Usage:
@@ -63,7 +77,7 @@ inline fun <T, R : Any> Observable<T>.mapSomeDistinct(crossinline mapper: T.() -
 
 /**
  * Applies [mapSome] and then [Observable.take] with value `1` to ensure
- * the stream will complete after emit the value in [mapper] once
+ * the stream will complete after emitting the value in [mapper] once
  *
  * Usage:
  * <code>

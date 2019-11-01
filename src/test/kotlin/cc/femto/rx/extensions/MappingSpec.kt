@@ -37,6 +37,25 @@ class MappingSpec : Spek({
         }
     }
 
+    describe("mapOnce") {
+        lateinit var observer: TestObserver<String>
+
+        beforeEachTest {
+            state = Observable.just(
+                State(),
+                State(bar = "initialized"),
+                State(foo = "changed")
+            )
+            observer = state.mapOnce { foo }.test()
+        }
+
+        it("maps to property and completes after one emission") {
+            observer.assertValues(
+                "foo"
+            )
+        }
+    }
+
     describe("mapOptional") {
         lateinit var observer: TestObserver<Optional<String>>
 
@@ -110,7 +129,7 @@ class MappingSpec : Spek({
             observer = state.mapSomeOnce { bar }.test()
         }
 
-        it("maps to nullable property, wraps in `Optional`, filters for `Some` and unsubscribes after one emission") {
+        it("maps to nullable property, wraps in `Optional`, filters for `Some` and completes after one emission") {
             observer.assertValues(
                 "initialized"
             )
