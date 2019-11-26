@@ -78,6 +78,19 @@ state().mapOptional { bar }
 ```
 
 
+### Observable.mapOptionalDistinct
+Map to one nullable property of the state and wrap in `Optional`
+and ensure that subsequently emitted values are distinct
+
+```kotlin
+state().mapOptionalDistinct { bar }
+  .subscribe { println(it) }
+
+// --> None
+// --> Some(initialized)
+```
+
+
 ### Observable.mapSome
 Map to one nullable property of the state and wrap in `Optional`,
 then filter for `Some`

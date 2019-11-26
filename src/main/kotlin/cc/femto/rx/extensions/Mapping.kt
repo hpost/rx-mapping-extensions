@@ -45,6 +45,21 @@ inline fun <T, R : Any> Observable<T>.mapOptional(crossinline mapper: T.() -> R?
     this.map { mapper(it).toOptional() }
 
 /**
+ * Applies [mapOptional] and then [Observable.distinctUntilChanged] to ensure
+ * the stream won't emit if the value in [mapper] has not changed
+ *
+ * Usage:
+ * <code>
+ *   stream.mapOptionalDistinct { foo }
+ *     .subscribe { /* access distinct optional value if present */ }
+ * </code>
+ *
+ * @see mapOptional
+ */
+inline fun <T, R : Any> Observable<T>.mapOptionalDistinct(crossinline mapper: T.() -> R?): Observable<Optional<R>> =
+        this.mapOptional(mapper).distinctUntilChanged()
+
+/**
  * Applies [mapOptional] and then [filterSome] to the stream
  *
  * Usage:
