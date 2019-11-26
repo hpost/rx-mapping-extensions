@@ -131,7 +131,7 @@ state().mapSomeOnce { bar }
 ## Binaries
 ```gradle
 dependencies {
-    implementation "cc.femto:rx-mapping-extensions:0.2"
+    implementation "cc.femto:rx-mapping-extensions:0.3"
 }
 ```
 
