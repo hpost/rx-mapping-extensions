@@ -45,6 +45,20 @@ inline fun <T, R : Any> Observable<T>.mapOptional(crossinline mapper: T.() -> R?
     this.map { mapper(it).toOptional() }
 
 /**
+ * Map the stream to the value returned from [mapper], which is wrapped in an [Optional],
+ * and then apply [Observable.take] with value `1` to ensure the stream will
+ * complete after emitting one value
+ *
+ * Usage:
+ * <code>
+ *   stream.mapOptionalOnce { foo }
+ *     .subscribe { /* access at most one value wrapped in Optional */ }
+ * </code>
+ */
+inline fun <T, R : Any> Observable<T>.mapOptionalOnce(crossinline mapper: T.() -> R?): Observable<Optional<R>> =
+        this.mapOptional(mapper).take(1)
+
+/**
  * Applies [mapOptional] and then [Observable.distinctUntilChanged] to ensure
  * the stream won't emit if the value in [mapper] has not changed
  *

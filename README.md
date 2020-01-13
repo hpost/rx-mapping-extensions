@@ -78,6 +78,18 @@ state().mapOptional { bar }
 ```
 
 
+### Observable.mapOptionalOnce
+Map to one nullable property of the state, wrap in `Optional`, and ensure
+that only first value is observed
+
+```kotlin
+state().mapOptionalOnce { bar }
+  .subscribe { println(it) }
+
+// --> None
+```
+
+
 ### Observable.mapOptionalDistinct
 Map to one nullable property of the state and wrap in `Optional`
 and ensure that subsequently emitted values are distinct
@@ -131,7 +143,7 @@ state().mapSomeOnce { bar }
 ## Binaries
 ```gradle
 dependencies {
-    implementation "cc.femto:rx-mapping-extensions:0.3"
+    implementation "cc.femto:rx-mapping-extensions:0.4"
 }
 ```
 
